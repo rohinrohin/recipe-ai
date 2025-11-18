@@ -1,16 +1,24 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { StyleSheet, View, Text, TouchableOpacity, Image } from "react-native";
 import { RFValue } from "react-native-responsive-fontsize";
-import { useOAuth } from "@clerk/clerk-expo";
+import { useOAuth, useAuth } from "@clerk/clerk-expo";
 import { AntDesign } from "@expo/vector-icons";
 
 const LoginScreen = ({ navigation }) => {
+  const { isSignedIn } = useAuth();
   const { startOAuthFlow: startGoogleAuthFlow } = useOAuth({
     strategy: "oauth_google",
   });
   const { startOAuthFlow: startAppleAuthFlow } = useOAuth({
     strategy: "oauth_apple",
   });
+
+  // Redirect to dashboard if already signed in
+  useEffect(() => {
+    if (isSignedIn) {
+      navigation.replace("NotesDashboardScreen");
+    }
+  }, [isSignedIn, navigation]);
 
   const onPress = async (authType: string) => {
     try {
