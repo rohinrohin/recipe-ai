@@ -58,11 +58,20 @@ const NotesDashboardScreen = ({ navigation }) => {
         {/* @ts-ignore, for css purposes */}
         <Image style={styles.avatarSmall} />
         <Text style={styles.title}>Your Notes</Text>
-        {imageUrl ? (
-          <Image style={styles.avatarSmall} source={{ uri: imageUrl }} />
-        ) : (
-          <Text>{firstName ? firstName : ""}</Text>
-        )}
+        <TouchableOpacity
+          onPress={() => navigation.navigate("ProfileScreen")}
+          activeOpacity={0.7}
+        >
+          {imageUrl ? (
+            <Image style={styles.avatarSmall} source={{ uri: imageUrl }} />
+          ) : (
+            <View style={styles.avatarSmall}>
+              <Text style={styles.avatarFallbackText}>
+                {firstName ? firstName[0] : "U"}
+              </Text>
+            </View>
+          )}
+        </TouchableOpacity>
       </View>
       <View style={styles.searchContainer}>
         <Feather
@@ -142,6 +151,14 @@ const styles = StyleSheet.create({
     width: 28,
     height: 28,
     borderRadius: 10,
+    backgroundColor: "#E5E7EB",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  avatarFallbackText: {
+    fontSize: RFValue(12),
+    fontFamily: "MMedium",
+    color: "#6B7280",
   },
   searchContainer: {
     flexDirection: "row",
