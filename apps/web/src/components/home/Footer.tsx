@@ -24,45 +24,43 @@ const menuItems = [
 const Footer = () => {
   return (
     <>
-      <div className="container hidden sm:block py-12">
-        <div className="flex flex-wrap md:flex-nowrap justify-between items-center pb-6">
+      <div className="container mx-auto hidden sm:block py-12 px-6 sm:px-12 max-w-[1280px]">
+        <div className="flex flex-wrap md:flex-nowrap justify-between items-center pb-8">
           <Logo />
           <Menu menuItems={menuItems} />
         </div>
-        <div className="pt-8 border-t-[#929292] border-t border-solid">
-          <h3 className="text-gray-900 text-xl not-italic font-semibold leading-[30px] font-montserrat pb-2">
-            Take more efficient notes with UseNotes
+        <div className="pt-8 border-t border-[#E9DBCD]">
+          <h3 className="text-[#1A0803] text-xl font-bold leading-tight font-[family-name:var(--font-pangram)] pb-3">
+            Organize your recipes with Recify
           </h3>
-          <div className="flex justify-between">
-            <p className="text-gray-600 font-montserrat text-base not-italic font-normal leading-6">
-              Save countless hours of note-taking and organize your notes
-              easier.
+          <div className="flex justify-between items-end">
+            <p className="text-[#2C2726] font-[family-name:var(--font-inter)] text-base font-normal leading-relaxed max-w-md">
+              Save and organize all your favorite recipes in one beautiful place.
             </p>
-            <p className="text-gray-600 font-inter text-base not-italic font-normal leading-6">
-              © 2023 UseNotes. All rights reserved.
+            <p className="text-[#7F7876] font-[family-name:var(--font-inter)] text-sm font-normal">
+              © 2024 Recify. All rights reserved.
             </p>
           </div>
         </div>
       </div>
 
-      <div className="container sm:hidden pt-7 pl-6 pr-5">
-        <div className="flex justify-between items-center">
+      <div className="container mx-auto sm:hidden pt-7 px-6">
+        <div className="flex justify-between items-start">
           <div className="flex flex-col gap-6">
             <Logo />
-            <h3 className="text-[#101828] text-base not-italic font-semibold leading-[18px] font-montserrat">
-              Take more efficient notes with UseNotes
+            <h3 className="text-[#1A0803] text-base font-bold leading-tight font-[family-name:var(--font-pangram)]">
+              Organize your recipes with Recify
             </h3>
-            <p className="text-[#101828] font-montserrat text-base not-italic font-light leading-[18px]">
-              Save countless hours of note-taking and organize your notes
-              easier.
+            <p className="text-[#2C2726] font-[family-name:var(--font-inter)] text-sm font-normal leading-relaxed">
+              Save and organize all your favorite recipes in one beautiful place.
             </p>
           </div>
           <div className="min-w-[100px]">
             <Menu menuItems={menuItems} />
           </div>
         </div>
-        <p className="text-[#667085] font-inter text-center text-base not-italic font-light leading-[18px] py-11">
-          © 2023 UseNotes. All rights reserved. <br />
+        <p className="text-[#7F7876] font-[family-name:var(--font-inter)] text-center text-sm font-normal py-11">
+          © 2024 Recify. All rights reserved. <br />
           <span className="mt-1"> Icons by Icons8</span>
         </p>
       </div>

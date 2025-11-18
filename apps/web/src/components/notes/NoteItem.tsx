@@ -12,16 +12,22 @@ export interface NoteProps {
 
 const NoteItem = ({ note, deleteNote }: NoteProps) => {
   return (
-    <div className="flex justify-between items-center h-[74px] bg-[#F9FAFB] py-5 px-5 sm:px-11 gap-x-5 sm:gap-x-10">
-      <Link href={`/notes/${note._id}`} className="flex-1">
-        <h1 className=" text-[#2D2D2D] text-[17px] sm:text-2xl not-italic font-normal leading-[114.3%] tracking-[-0.6px]">
+    <div className="group flex flex-col bg-white rounded-xl p-6 border-2 border-[#E9DBCD] hover:border-[#F64C20] transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+      <Link href={`/notes/${note._id}`} className="flex-1 mb-4">
+        <h2 className="text-[#1A0803] font-[family-name:var(--font-pangram)] text-lg sm:text-xl font-bold leading-tight mb-2 line-clamp-2 group-hover:text-[#F64C20] transition-colors">
           {note.title}
-        </h1>
+        </h2>
+        <p className="text-[#7F7876] font-[family-name:var(--font-inter)] text-sm font-normal">
+          {new Date(Number(note._creationTime)).toLocaleDateString('en-US', {
+            month: 'long',
+            day: 'numeric',
+            year: 'numeric'
+          })}
+        </p>
       </Link>
-      <p className="hidden md:flex text-[#2D2D2D] text-center text-xl not-italic font-extralight leading-[114.3%] tracking-[-0.5px]">
-        {new Date(Number(note._creationTime)).toLocaleDateString()}
-      </p>
-      <DeleteNote deleteAction={() => deleteNote({ noteId: note._id })} />
+      <div className="flex justify-end pt-3 border-t border-[#E9DBCD]">
+        <DeleteNote deleteAction={() => deleteNote({ noteId: note._id })} />
+      </div>
     </div>
   );
 };

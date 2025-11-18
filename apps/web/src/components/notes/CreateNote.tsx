@@ -32,19 +32,16 @@ export default function CreateNote() {
       <div className="flex justify-center items-center">
         <button
           onClick={() => setOpen(true)}
-          className="button text-[#EBECEF] flex gap-4 justify-center items-center text-center px-8 sm:px-16 py-2"
+          className="button flex gap-3 justify-center items-center text-center px-10 sm:px-16 py-4 font-[family-name:var(--font-pangram)] text-lg sm:text-2xl"
         >
           <Image
             src={"/images/Add.png"}
-            width={40}
-            height={40}
-            alt="search"
-            className="float-right sm:w-[40px] sm:h-[40px] w-6 h-6"
+            width={32}
+            height={32}
+            alt="Add recipe"
+            className="sm:w-[32px] sm:h-[32px] w-6 h-6 brightness-0"
           />
-          <span className="text-[17px] sm:text-3xl not-italic font-medium leading-[79%] tracking-[-0.75px]">
-            {" "}
-            New Note
-          </span>
+          <span>New Recipe</span>
         </button>
       </div>
 
@@ -78,77 +75,75 @@ export default function CreateNote() {
                 leaveFrom="opacity-100 translate-y-0 sm:scale-100"
                 leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
               >
-                <Dialog.Panel className="relative transform overflow-hidden rounded-[10px] bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-[719px]">
-                  <div className="bg-white px-4 pb-4 pt-5 sm:p-8 sm:pb-4">
+                <Dialog.Panel className="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-2xl transition-all sm:my-8 sm:w-full sm:max-w-[719px]">
+                  <div className="bg-white px-6 pb-6 pt-8 sm:p-10 sm:pb-6">
                     <>
-                      <div className="mt-3  sm:mt-0 text-left">
+                      <div className="mt-3 sm:mt-0 text-left">
                         <Dialog.Title
-                          as="h3"
-                          className="text-black text-center text-xl sm:text-left sm:text-[35px] pb-6 sm:pb-8 not-italic font-semibold leading-[90.3%] tracking-[-0.875px]"
+                          as="h2"
+                          className="text-[#1A0803] font-[family-name:var(--font-pangram)] text-center text-2xl sm:text-left sm:text-4xl pb-6 sm:pb-8 font-bold leading-tight"
                         >
-                          Create New Note
+                          Create New Recipe
                         </Dialog.Title>
-                        <div className="mt-2 space-y-3">
-                          <div className="pb-2">
+                        <div className="mt-2 space-y-5">
+                          <div>
                             <label
                               htmlFor="title"
-                              className=" text-black text-[17px] sm:text-2xl not-italic font-medium leading-[90.3%] tracking-[-0.6px]"
+                              className="text-[#1A0803] font-[family-name:var(--font-pangram)] text-base sm:text-lg font-semibold mb-2 block"
                             >
-                              Title
+                              Recipe Title
                             </label>
-                            <div className="mt-2">
-                              <input
-                                id="title"
-                                name="title"
-                                type="text"
-                                placeholder="Note Title"
-                                autoComplete="title"
-                                value={title}
-                                onChange={(e) => setTitle(e.target.value)}
-                                className="border shadow-[0px_1px_2px_0px_rgba(16,24,40,0.05)] rounded-lg border-solid border-[#D0D5DD] bg-white w-full py-2.5 px-[14px] text-black text-[17px] not-italic font-light leading-[90.3%] tracking-[-0.425px] sm:text-2xl"
-                              />
-                            </div>
+                            <input
+                              id="title"
+                              name="title"
+                              type="text"
+                              placeholder="e.g., Grandma's Chocolate Chip Cookies"
+                              autoComplete="title"
+                              value={title}
+                              onChange={(e) => setTitle(e.target.value)}
+                              className="border-2 rounded-xl border-[#E9DBCD] bg-white w-full py-3 px-4 text-[#1A0803] font-[family-name:var(--font-inter)] text-base sm:text-lg placeholder:text-[#7F7876] focus:outline-none focus:border-[#F64C20] transition-colors"
+                            />
                           </div>
 
-                          <div className="">
+                          <div>
                             <label
                               htmlFor="description"
-                              className=" text-black text-[17px] sm:text-2xl not-italic font-medium leading-[90.3%] tracking-[-0.6px]"
+                              className="text-[#1A0803] font-[family-name:var(--font-pangram)] text-base sm:text-lg font-semibold mb-2 block"
                             >
-                              The Note
+                              Recipe Details
                             </label>
-                            <div className="mt-2 pb-[18px]">
-                              <textarea
-                                id="description"
-                                name="description"
-                                rows={8}
-                                placeholder="Start your note "
-                                className="block w-full rounded-md border-0 py-1.5  border-[#D0D5DD] text-2xl shadow-xs ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600  sm:leading-6 text-black text-[17px] not-italic font-light leading-[90.3%] tracking-[-0.425px] sm:text-2xl"
-                                value={content}
-                                onChange={(e) => setContent(e.target.value)}
-                              />
-                            </div>
-                            <p className="text-black text-[17px] sm:text-2xl not-italic font-medium leading-[90.3%] tracking-[-0.6px]">
-                              AI Features
-                            </p>
+                            <textarea
+                              id="description"
+                              name="description"
+                              rows={8}
+                              placeholder="Add ingredients, instructions, and cooking notes..."
+                              className="block w-full rounded-xl border-2 border-[#E9DBCD] py-3 px-4 text-[#1A0803] font-[family-name:var(--font-inter)] text-base sm:text-lg placeholder:text-[#7F7876] focus:outline-none focus:border-[#F64C20] transition-colors resize-none"
+                              value={content}
+                              onChange={(e) => setContent(e.target.value)}
+                            />
                           </div>
 
-                          <Checkbox
-                            openaiKeySet={openaiKeySet}
-                            isChecked={isChecked}
-                            checkHandler={() => setIsChecked(!isChecked)}
-                          />
+                          <div className="pt-2">
+                            <p className="text-[#1A0803] font-[family-name:var(--font-pangram)] text-base sm:text-lg font-semibold mb-3">
+                              AI Features
+                            </p>
+                            <Checkbox
+                              openaiKeySet={openaiKeySet}
+                              isChecked={isChecked}
+                              checkHandler={() => setIsChecked(!isChecked)}
+                            />
+                          </div>
                         </div>
                       </div>
                     </>
                   </div>
-                  <div className=" px-4 py-3 mb-5 flex justify-center items-center">
+                  <div className="px-6 py-4 mb-6 flex justify-center items-center">
                     <button
                       type="button"
-                      className="button text-white text-center text-[17px] sm:text-2xl not-italic font-semibold leading-[90.3%] tracking-[-0.6px] px-[70px] py-2"
+                      className="button font-[family-name:var(--font-pangram)] text-base sm:text-xl px-16 py-3"
                       onClick={createUserNote}
                     >
-                      Create
+                      Create Recipe
                     </button>
                   </div>
                 </Dialog.Panel>

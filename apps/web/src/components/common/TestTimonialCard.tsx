@@ -12,55 +12,46 @@ interface Props {
 const TestTimonialCard = ({ data }: Props) => {
   return (
     <div
-      className={`max-w-[370px] w-full space-y-8 h-auto shrink-0 rounded-[20px] border-[1.5px] border-solid border-[#EAECF0] px-[35px] pt-14 pb-20 ${
-        data.feature ? "bg-primary" : "bg-white"
-      } $}`}
+      className={`flex-1 min-w-[280px] max-w-[370px] space-y-6 h-auto rounded-xl p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl ${
+        data.feature ? "bg-[#F64C20] text-white" : "bg-white text-[#1A0803]"
+      }`}
     >
-      <div className="flex gap-2">
+      <div className="flex gap-1">
         {Array(5)
           .fill(0)
-          .map((data, index) => (
+          .map((_, index) => (
             <Image
               src="/images/star.svg"
-              width={29}
-              height={29}
+              width={20}
+              height={20}
               alt="star"
               key={index}
+              className={data.feature ? "brightness-0 invert" : ""}
             />
           ))}
       </div>
       <blockquote
-        className={` text-lg not-italic font-normal leading-[26px] font-montserrat ${
-          data.feature ? "text-white" : "text-[#313234]"
-        }`}
+        className={`text-base sm:text-lg font-normal leading-relaxed font-[family-name:var(--font-inter)]`}
       >
-        <span className="text-lg">&ldquo;</span>
+        <span className="text-2xl">&ldquo;</span>
         {data.review}
-        <span className="text-lg">&rdquo;</span>
+        <span className="text-2xl">&rdquo;</span>
       </blockquote>
-      <div className="flex gap-7 items-center ">
-        <div className="w-[52px] h-[52px] shrink-0 border rounded-full flex items-center justify-center">
+      <div className="flex gap-4 items-center pt-4">
+        <div className="w-12 h-12 shrink-0 rounded-full overflow-hidden border-2 border-current opacity-20">
           <Image
-            className="rounded-[38px] w-[38px] h-[38px] "
+            className="w-full h-full object-cover"
             src={data.profile}
-            width={38}
-            height={38}
-            alt="ryan"
+            width={48}
+            height={48}
+            alt={data.name}
           />
         </div>
-        <div className="">
-          <h3
-            className={` text-xl not-italic font-medium leading-[normal] font-montserrat ${
-              data.feature ? "text-white" : "text-[#25262B]"
-            }`}
-          >
+        <div>
+          <h4 className="text-base font-bold leading-tight font-[family-name:var(--font-pangram)]">
             {data.name}
-          </h3>
-          <p
-            className={` text-base not-italic font-medium leading-[normal] font-montserrat ${
-              data.feature ? "text-white" : "text-[#555F68]"
-            }`}
-          >
+          </h4>
+          <p className={`text-sm font-normal leading-tight font-[family-name:var(--font-inter)] ${data.feature ? "opacity-90" : "opacity-60"}`}>
             {data.designation}
           </p>
         </div>

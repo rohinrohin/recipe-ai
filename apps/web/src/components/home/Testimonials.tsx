@@ -5,26 +5,26 @@ const TestimonialsData = [
   {
     rating: 5,
     review:
-      "Great note-taking application! The AI features make note-taking a breeze",
-    name: "Ryan Lowry",
-    designation: "Engineer & Author",
+      "Recify has completely transformed how I organize my recipes. The interface is beautiful and so easy to use!",
+    name: "Sarah Mitchell",
+    designation: "Home Chef",
     profile: "/images/profile.png",
     feature: false,
   },
   {
     rating: 5,
     review:
-      "Really like the clean design of UseNotes. The AI-driven search is impressively accurate, adding a personal dimension to my notes. Fast and very easy to use.",
-    name: "John Collins",
-    designation: "Engineer & Author",
+      "Love the clean design of Recify. Being able to access all my family recipes in one place is a game-changer. The meal planning feature saves me hours every week!",
+    name: "Marcus Chen",
+    designation: "Food Blogger",
     profile: "/images/profile.png",
     feature: true,
   },
   {
     rating: 5,
-    review: "Simply brilliant! UseNotes has elevated my productivity.",
-    name: "Moe Partuj",
-    designation: "Student",
+    review: "Simply brilliant! Recify makes cooking more enjoyable and organized.",
+    name: "Emma Rodriguez",
+    designation: "Culinary Student",
     profile: "/images/Moe-Partuj.jpeg",
     feature: false,
   },
@@ -34,38 +34,17 @@ const Testimonials = () => {
   return (
     <section
       id="reviews"
-      className="bg_image bg_circle relative overflow-hidden"
+      className="bg-[#F1E7DD] relative overflow-hidden py-20 sm:py-32"
     >
-      <Image
-        src={"/images/blue-circle-right.svg"}
-        width={503}
-        height={531}
-        alt=""
-        className="absolute hidden sm:block -right-40 top-1/4 h-[531px]"
-      />
-      <div className="container py-11 sm:py-16 px-6 sm:px-0">
-        <p className="text-black text-[17px] sm:text-3xl not-italic font-medium leading-[90.3%] tracking-[-0.75px] text-center font-montserrat pb-2 sm:pb-[18px]">
+      <div className="container mx-auto py-11 sm:py-16 px-6 sm:px-12 max-w-[1280px]">
+        <p className="text-[#F64C20] text-base sm:text-xl font-bold leading-tight tracking-tight text-center font-[family-name:var(--font-pangram)] pb-3 sm:pb-4 uppercase">
           Reviews
         </p>
-        <h3 className=" text-black text-3xl sm:text-[57px] not-italic font-medium leading-[90.3%] tracking-[-1.425px] font-montserrat text-center pb-[20px] sm:pb-[87px]">
-          User Testimonials
-        </h3>
+        <h2 className="text-[#1A0803] text-3xl sm:text-[48px] md:text-[64px] font-bold leading-tight tracking-tight font-[family-name:var(--font-pangram)] text-center pb-16 sm:pb-24 max-w-3xl mx-auto">
+          What Our Users Say
+        </h2>
 
-        <div className="flex flex-wrap md:flex-nowrap justify-center items-start gap-4 pb-10 mb-10 relative">
-          <Image
-            src={"/images/message-left.svg"}
-            width={110}
-            height={102}
-            alt=""
-            className="absolute hidden md:block left-0 top-full"
-          />
-          <Image
-            src={"/images/message-right.svg"}
-            width={110}
-            height={102}
-            alt=""
-            className="absolute hidden md:block right-0 bottom-full"
-          />
+        <div className="flex flex-wrap lg:flex-nowrap justify-center items-stretch gap-6 relative">
           {TestimonialsData.map((item, index) => (
             <TestTimonialCard data={item} key={index} />
           ))}

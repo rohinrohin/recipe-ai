@@ -15,20 +15,24 @@ const NoteDetails = ({ noteId }: NoteDetailsProps) => {
   const currentNote = useQuery(api.notes.getNote, { id: noteId });
 
   return (
-    <div className="container space-y-6 sm:space-y-9 py-20 px-[26px] sm:px-0">
-      <div className="flex justify-center items-center">
+    <div className="container mx-auto max-w-[900px] space-y-8 sm:space-y-10 py-16 sm:py-24 px-6 sm:px-12">
+      <div className="flex justify-center items-center mb-6">
         <ComplexToggle isSummary={isSummary} setIsSummary={setIsSummary} />
       </div>
-      <h3 className="text-black text-center pb-5 text-xl sm:text-[32px] not-italic font-semibold leading-[90.3%] tracking-[-0.8px]">
-        {currentNote?.title}
-      </h3>
-      <p className="text-black text-xl sm:text-[28px] not-italic font-normal leading-[130.3%] tracking-[-0.7px]">
-        {!isSummary
-          ? currentNote?.content
-          : currentNote?.summary
-            ? currentNote?.summary
-            : "No Summary available"}
-      </p>
+      <div className="bg-white rounded-2xl p-8 sm:p-12 border-2 border-[#E9DBCD] shadow-lg">
+        <h1 className="text-[#1A0803] font-[family-name:var(--font-pangram)] text-center text-2xl sm:text-4xl md:text-5xl font-bold leading-tight tracking-tight pb-8 sm:pb-10">
+          {currentNote?.title}
+        </h1>
+        <div className="prose prose-lg max-w-none">
+          <p className="text-[#2C2726] font-[family-name:var(--font-inter)] text-lg sm:text-xl font-normal leading-relaxed whitespace-pre-wrap">
+            {!isSummary
+              ? currentNote?.content
+              : currentNote?.summary
+                ? currentNote?.summary
+                : "No AI summary available for this recipe"}
+          </p>
+        </div>
+      </div>
     </div>
   );
 };

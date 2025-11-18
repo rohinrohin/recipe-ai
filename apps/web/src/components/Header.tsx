@@ -27,8 +27,8 @@ export default function Header() {
     <Disclosure as="nav" className=" ">
       {({ open }) => (
         <>
-          <div className="flex items-center bg-white h-16 sm:h-20">
-            <div className="container px-2 sm:px-0">
+          <div className="flex items-center bg-[#F9F5F1] border-b border-[#E9DBCD] h-16 sm:h-20 sticky top-0 z-50">
+            <div className="container mx-auto px-6 sm:px-12 max-w-[1280px]">
               <div className="relative flex h-16 items-center justify-between">
                 <div className="flex sm:hidden shrink-0 items-center">
                   <Logo isMobile={true} />
@@ -44,7 +44,7 @@ export default function Header() {
                           <li key={item.name}>
                             <Link
                               href={item.href}
-                              className="text-[#2D2D2D] text-center text-xl not-italic font-normal leading-[normal]"
+                              className="text-[#1A0803] font-[family-name:var(--font-inter)] text-center text-base font-semibold hover:text-[#F64C20] transition-colors"
                               aria-current={item.current ? "page" : undefined}
                             >
                               {item.name}
@@ -60,9 +60,9 @@ export default function Header() {
                     <Link href="/notes">
                       <button
                         type="button"
-                        className=" text-white text-center text-xl not-italic font-normal leading-[normal] font-montserrat px-[22px] py-[11px] button"
+                        className="button-primary font-[family-name:var(--font-pangram)] text-base px-6 py-3"
                       >
-                        See your Notes
+                        See your Recipes
                       </button>
                     </Link>
                     <UserNav
@@ -72,16 +72,16 @@ export default function Header() {
                     />
                   </div>
                 ) : (
-                  <div className="hidden sm:flex absolute inset-y-0 right-0 gap-6 items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+                  <div className="hidden sm:flex absolute inset-y-0 right-0 gap-4 items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                     <Link
                       href="/notes"
-                      className="border rounded-lg border-solid border-[#2D2D2D] text-[#2D2D2D] text-center text-xl not-italic font-normal leading-[normal] font-montserrat px-[22px] py-2.5"
+                      className="border-2 rounded-xl border-solid border-[#1A0803] text-[#1A0803] text-center text-base font-bold hover:bg-[#1A0803] hover:text-white transition-all font-[family-name:var(--font-pangram)] px-6 py-3"
                     >
                       Sign in
                     </Link>
                     <Link
                       href="/notes"
-                      className=" text-white text-center text-xl not-italic font-normal leading-[normal] font-montserrat px-[22px] py-[11px] button"
+                      className="button-primary text-base font-[family-name:var(--font-pangram)] px-6 py-3"
                     >
                       Get Started
                     </Link>
