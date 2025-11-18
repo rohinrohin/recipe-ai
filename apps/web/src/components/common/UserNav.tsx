@@ -1,5 +1,5 @@
 import { useClerk } from "@clerk/clerk-react";
-import { LogOut, Paintbrush2, UserCircle } from "lucide-react";
+import { LogOut, Paintbrush2 } from "lucide-react";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "./avatar";
 import { Button } from "./button";
@@ -45,12 +45,6 @@ export function UserNav({
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <Link href="/notes/profile">
-          <DropdownMenuItem className="hover:cursor-pointer hover:bg-gray-200">
-            <UserCircle className="mr-2 h-4 w-4 text-black" />
-            <span className="text-black">Profile</span>
-          </DropdownMenuItem>
-        </Link>
         <Link href="/notes">
           <DropdownMenuItem className="hover:cursor-pointer hover:bg-gray-200">
             <Paintbrush2 className="mr-2 h-4 w-4 text-black" />
