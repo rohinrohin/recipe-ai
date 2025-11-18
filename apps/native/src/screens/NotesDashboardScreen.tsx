@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   StyleSheet,
   View,
@@ -8,6 +8,8 @@ import {
   Image,
   FlatList,
   Dimensions,
+  Animated,
+  Keyboard,
 } from "react-native";
 import { Feather, AntDesign } from "@expo/vector-icons";
 import { RFValue } from "react-native-responsive-fontsize";
@@ -22,6 +24,9 @@ const NotesDashboardScreen = ({ navigation }) => {
 
   const allNotes = useQuery(api.notes.getNotes);
   const [search, setSearch] = useState("");
+  const [isSearchVisible, setIsSearchVisible] = useState(false);
+  const searchInputRef = useRef(null);
+  const searchAnimation = useRef(new Animated.Value(0)).current;
 
   const finalNotes = search
     ? allNotes.filter(
@@ -30,6 +35,29 @@ const NotesDashboardScreen = ({ navigation }) => {
           note.content.toLowerCase().includes(search.toLowerCase()),
       )
     : allNotes;
+
+  useEffect(() => {
+    Animated.spring(searchAnimation, {
+      toValue: isSearchVisible ? 1 : 0,
+      useNativeDriver: false,
+      tension: 80,
+      friction: 10,
+    }).start();
+
+    if (isSearchVisible) {
+      // Auto-focus the search input when it appears
+      setTimeout(() => searchInputRef.current?.focus(), 100);
+    }
+  }, [isSearchVisible]);
+
+  const toggleSearch = () => {
+    if (isSearchVisible) {
+      // When closing, clear the search
+      setSearch("");
+      Keyboard.dismiss();
+    }
+    setIsSearchVisible(!isSearchVisible);
+  };
 
   const renderItem = ({ item }) => (
     <TouchableOpacity
@@ -58,26 +86,75 @@ const NotesDashboardScreen = ({ navigation }) => {
         {/* @ts-ignore, for css purposes */}
         <Image style={styles.avatarSmall} />
         <Text style={styles.title}>Your Notes</Text>
-        {imageUrl ? (
-          <Image style={styles.avatarSmall} source={{ uri: imageUrl }} />
-        ) : (
-          <Text>{firstName ? firstName : ""}</Text>
-        )}
+        <View style={styles.headerActions}>
+          <TouchableOpacity
+            onPress={toggleSearch}
+            style={styles.searchButton}
+            activeOpacity={0.7}
+          >
+            <Feather name="search" size={22} color="#2D2D2D" />
+          </TouchableOpacity>
+          {imageUrl ? (
+            <Image style={styles.avatarSmall} source={{ uri: imageUrl }} />
+          ) : (
+            <Text style={styles.avatarPlaceholder}>{firstName ? firstName : ""}</Text>
+          )}
+        </View>
       </View>
-      <View style={styles.searchContainer}>
+
+      {/* Animated Search Bar */}
+      <Animated.View
+        style={[
+          styles.searchContainer,
+          {
+            opacity: searchAnimation,
+            height: searchAnimation.interpolate({
+              inputRange: [0, 1],
+              outputRange: [0, 50],
+            }),
+            marginTop: searchAnimation.interpolate({
+              inputRange: [0, 1],
+              outputRange: [0, 20],
+            }),
+            transform: [
+              {
+                scaleY: searchAnimation,
+              },
+            ],
+          },
+        ]}
+      >
         <Feather
           name="search"
           size={20}
-          color="grey"
+          color="#0D87E1"
           style={styles.searchIcon}
         />
         <TextInput
+          ref={searchInputRef}
           value={search}
           onChangeText={setSearch}
-          placeholder="Search"
+          placeholder="Search notes..."
+          placeholderTextColor="#999"
           style={styles.searchInput}
         />
-      </View>
+        {search.length > 0 && (
+          <TouchableOpacity
+            onPress={() => setSearch("")}
+            style={styles.clearButton}
+            activeOpacity={0.7}
+          >
+            <Feather name="x" size={18} color="#999" />
+          </TouchableOpacity>
+        )}
+        <TouchableOpacity
+          onPress={toggleSearch}
+          style={styles.cancelButton}
+          activeOpacity={0.7}
+        >
+          <Text style={styles.cancelButtonText}>Cancel</Text>
+        </TouchableOpacity>
+      </Animated.View>
       {!finalNotes || finalNotes.length === 0 ? (
         <View style={styles.emptyState}>
           <Text style={styles.emptyStateText}>
@@ -138,29 +215,66 @@ const styles = StyleSheet.create({
     paddingHorizontal: 13,
     marginTop: 19,
   },
+  headerActions: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12,
+  },
   avatarSmall: {
     width: 28,
     height: 28,
     borderRadius: 10,
   },
+  avatarPlaceholder: {
+    fontSize: RFValue(12),
+    fontFamily: "MRegular",
+    color: "#2D2D2D",
+  },
+  searchButton: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: "#F5F5F5",
+    justifyContent: "center",
+    alignItems: "center",
+  },
   searchContainer: {
     flexDirection: "row",
     alignItems: "center",
+    backgroundColor: "#F9FAFB",
     borderWidth: 1,
-    borderColor: "grey",
-    borderRadius: 10,
-    padding: 10,
+    borderColor: "#E5E7EB",
+    borderRadius: 12,
+    paddingHorizontal: 12,
     marginHorizontal: 15,
-    marginTop: 30,
+    overflow: "hidden",
   },
   searchIcon: {
-    marginRight: 10,
+    marginRight: 8,
   },
   searchInput: {
     flex: 1,
     fontSize: RFValue(15),
     fontFamily: "MRegular",
     color: "#2D2D2D",
+    paddingVertical: 12,
+  },
+  clearButton: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    backgroundColor: "#F0F0F0",
+    justifyContent: "center",
+    alignItems: "center",
+    marginRight: 8,
+  },
+  cancelButton: {
+    paddingHorizontal: 10,
+  },
+  cancelButtonText: {
+    fontSize: RFValue(14),
+    fontFamily: "MMedium",
+    color: "#0D87E1",
   },
   notesList: {
     flex: 1,
