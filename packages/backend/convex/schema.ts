@@ -7,5 +7,7 @@ export default defineSchema({
     title: v.string(),
     content: v.string(),
     summary: v.optional(v.string()),
-  }),
+    createdAt: v.number(),
+    updatedAt: v.number(),
+  }).index("by_user_and_updated", ["userId", "updatedAt"]),
 });
