@@ -15,33 +15,48 @@ import { useAuth, useUser } from "@clerk/clerk-expo";
 import { api } from "@packages/backend/convex/_generated/api";
 import { useQuery } from "convex/react";
 
-const NotesDashboardScreen = ({ navigation }) => {
+const RecipesDashboardScreen = ({ navigation }) => {
   const user = useUser();
   const imageUrl = user?.user?.imageUrl;
   const firstName = user?.user?.firstName;
 
-  const allNotes = useQuery(api.notes.getNotes);
+  const allRecipes = useQuery(api.recipes.getRecipes);
   const [search, setSearch] = useState("");
 
-  const finalNotes = search
-    ? allNotes.filter(
-        (note) =>
-          note.title.toLowerCase().includes(search.toLowerCase()) ||
-          note.content.toLowerCase().includes(search.toLowerCase()),
+  const finalRecipes = search
+    ? allRecipes?.filter(
+        (recipe) =>
+          recipe.title.toLowerCase().includes(search.toLowerCase()) ||
+          recipe.description?.toLowerCase().includes(search.toLowerCase()) ||
+          recipe.tags?.some((tag) =>
+            tag.toLowerCase().includes(search.toLowerCase())
+          )
       )
-    : allNotes;
+    : allRecipes;
 
   const renderItem = ({ item }) => (
     <TouchableOpacity
       onPress={() =>
-        navigation.navigate("InsideNoteScreen", {
+        navigation.navigate("InsideRecipeScreen", {
           item: item,
         })
       }
       activeOpacity={0.5}
-      style={styles.noteItem}
+      style={styles.recipeItem}
     >
-      <Text style={styles.noteText}>{item.title}</Text>
+      <View style={styles.recipeItemContent}>
+        <Text style={styles.recipeTitle}>{item.title}</Text>
+        {(item.servings || item.totalTime) && (
+          <View style={styles.recipeMetaContainer}>
+            {item.servings && (
+              <Text style={styles.recipeMeta}>🍽️ {item.servings}</Text>
+            )}
+            {item.totalTime && (
+              <Text style={styles.recipeMeta}>⏱️ {item.totalTime}</Text>
+            )}
+          </View>
+        )}
+      </View>
     </TouchableOpacity>
   );
 
@@ -49,19 +64,19 @@ const NotesDashboardScreen = ({ navigation }) => {
     <View style={styles.container}>
       <View style={styles.header}>
         <Image
-          source={require("../assets/icons/logo2small.png")} // Replace with your logo image file
+          source={require("../assets/icons/logo2small.png")}
           style={styles.logo}
         />
       </View>
 
-      <View style={styles.yourNotesContainer}>
+      <View style={styles.yourRecipesContainer}>
         <TouchableOpacity
-          onPress={() => navigation.navigate("RecipesDashboardScreen")}
-          style={styles.recipesButton}
+          onPress={() => navigation.navigate("NotesDashboardScreen")}
+          style={styles.notesButton}
         >
-          <Text style={styles.recipesButtonText}>🍳 Recipes</Text>
+          <Text style={styles.notesButtonText}>📝 Notes</Text>
         </TouchableOpacity>
-        <Text style={styles.title}>Your Notes</Text>
+        <Text style={styles.title}>Your Recipes</Text>
         {imageUrl ? (
           <Image style={styles.avatarSmall} source={{ uri: imageUrl }} />
         ) : (
@@ -78,22 +93,24 @@ const NotesDashboardScreen = ({ navigation }) => {
         <TextInput
           value={search}
           onChangeText={setSearch}
-          placeholder="Search"
+          placeholder="Search recipes..."
           style={styles.searchInput}
         />
       </View>
-      {!finalNotes || finalNotes.length === 0 ? (
+      {!finalRecipes || finalRecipes.length === 0 ? (
         <View style={styles.emptyState}>
           <Text style={styles.emptyStateText}>
-            Create your first note to{"\n"}get started
+            {search
+              ? "No recipes found"
+              : "Create your first recipe to\nget started"}
           </Text>
         </View>
       ) : (
         <FlatList
-          data={finalNotes}
+          data={finalRecipes}
           renderItem={renderItem}
           keyExtractor={(item) => item._id}
-          style={styles.notesList}
+          style={styles.recipesList}
           contentContainerStyle={{
             marginTop: 19,
             borderTopWidth: 0.5,
@@ -103,15 +120,17 @@ const NotesDashboardScreen = ({ navigation }) => {
       )}
 
       <TouchableOpacity
-        onPress={() => navigation.navigate("CreateNoteScreen")}
-        style={styles.newNoteButton}
+        onPress={() => navigation.navigate("CreateRecipeScreen")}
+        style={styles.newRecipeButton}
       >
         <AntDesign name="pluscircle" size={20} color="#fff" />
-        <Text style={styles.newNoteButtonText}>Create a New Note</Text>
+        <Text style={styles.newRecipeButtonText}>Create a New Recipe</Text>
       </TouchableOpacity>
     </View>
   );
 };
+
+const { width } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
   container: {
@@ -135,7 +154,7 @@ const styles = StyleSheet.create({
     fontFamily: "MMedium",
     alignSelf: "center",
   },
-  yourNotesContainer: {
+  yourRecipesContainer: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
@@ -147,13 +166,13 @@ const styles = StyleSheet.create({
     height: 28,
     borderRadius: 10,
   },
-  recipesButton: {
+  notesButton: {
     backgroundColor: "#0D87E1",
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 8,
   },
-  recipesButtonText: {
+  notesButtonText: {
     fontSize: RFValue(12),
     fontFamily: "MMedium",
     color: "#fff",
@@ -163,41 +182,66 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderWidth: 1,
     borderColor: "grey",
-    borderRadius: 10,
-    padding: 10,
-    marginHorizontal: 15,
-    marginTop: 30,
+    borderRadius: 2,
+    paddingHorizontal: 16,
+    marginHorizontal: 13,
+    marginTop: 19,
+    height: 39,
   },
   searchIcon: {
-    marginRight: 10,
+    marginRight: 8,
   },
   searchInput: {
     flex: 1,
     fontSize: RFValue(15),
-    fontFamily: "MRegular",
-    color: "#2D2D2D",
+    fontFamily: "MLight",
   },
-  notesList: {
+  emptyState: {
     flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 40,
   },
-  noteItem: {
-    padding: 20,
+  emptyStateText: {
+    fontSize: RFValue(16),
+    fontFamily: "MRegular",
+    color: "#A9A9A9",
+    textAlign: "center",
+  },
+  recipesList: {
+    flex: 1,
+    marginHorizontal: 13,
+  },
+  recipeItem: {
+    backgroundColor: "#F9FAFB",
+    paddingVertical: 15,
+    paddingHorizontal: 16,
     borderBottomWidth: 0.5,
     borderBottomColor: "rgba(0, 0, 0, 0.59)",
-
-    backgroundColor: "#F9FAFB",
   },
-  noteText: {
-    fontSize: 16,
-    fontFamily: "MLight",
+  recipeItemContent: {
+    flex: 1,
+  },
+  recipeTitle: {
+    fontSize: RFValue(15),
+    fontFamily: "MMedium",
     color: "#2D2D2D",
+    marginBottom: 6,
   },
-
-  newNoteButton: {
+  recipeMetaContainer: {
+    flexDirection: "row",
+    gap: 12,
+  },
+  recipeMeta: {
+    fontSize: RFValue(12),
+    fontFamily: "MLight",
+    color: "#666",
+  },
+  newRecipeButton: {
     flexDirection: "row",
     backgroundColor: "#0D87E1",
     borderRadius: 7,
-    width: Dimensions.get("window").width / 1.6,
+    width: width / 1.6,
     alignSelf: "center",
     alignItems: "center",
     justifyContent: "center",
@@ -211,37 +255,14 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.27,
     shadowRadius: 4.65,
-
     elevation: 6,
   },
-  newNoteButtonText: {
+  newRecipeButtonText: {
     color: "white",
     fontSize: RFValue(15),
     fontFamily: "MMedium",
     marginLeft: 10,
   },
-  switchContainer: {
-    position: "absolute",
-    top: 20,
-    right: 20,
-  },
-  emptyStateText: {
-    textAlign: "center",
-    alignSelf: "center",
-    fontSize: RFValue(15),
-    color: "grey",
-    fontFamily: "MLight",
-  },
-  emptyState: {
-    width: "100%",
-    height: "35%",
-    marginTop: 19,
-    backgroundColor: "#F9FAFB",
-    justifyContent: "center",
-    alignItems: "center",
-    borderWidth: 0.5,
-    borderColor: "rgba(0, 0, 0, 0.59)",
-  },
 });
 
-export default NotesDashboardScreen;
+export default RecipesDashboardScreen;
