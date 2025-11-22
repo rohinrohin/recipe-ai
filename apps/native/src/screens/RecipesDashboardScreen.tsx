@@ -123,7 +123,11 @@ const RecipesDashboardScreen = ({ navigation }) => {
       <View style={[styles.header, { paddingTop: insets.top }]}>
         <Text style={styles.logoText}>RecipeAI</Text>
         <View style={styles.headerRight}>
-          <TouchableOpacity style={styles.iconButton}>
+          <TouchableOpacity
+            style={styles.iconButton}
+            onPress={() => navigation.navigate("SearchScreen")}
+            activeOpacity={0.6}
+          >
             <Feather name="search" size={24} color="#1A1918" />
           </TouchableOpacity>
           {imageUrl && (
