@@ -30,6 +30,44 @@ export const getRecipes = query({
   },
 });
 
+// Search recipes by title, description, or tags
+export const searchRecipes = query({
+  args: {
+    searchQuery: v.string(),
+  },
+  handler: async (ctx, { searchQuery }) => {
+    const userId = await getUserId(ctx);
+    if (!userId) return null;
+
+    // Get all user recipes
+    const allRecipes = await ctx.db
+      .query("recipes")
+      .withIndex("by_user", (q) => q.eq("userId", userId))
+      .order("desc")
+      .collect();
+
+    // If search query is empty, return all recipes
+    if (!searchQuery.trim()) {
+      return allRecipes;
+    }
+
+    const query = searchQuery.toLowerCase().trim();
+
+    // Filter recipes by title, description, or tags
+    const filteredRecipes = allRecipes.filter((recipe) => {
+      const titleMatch = recipe.title.toLowerCase().includes(query);
+      const descriptionMatch = recipe.description?.toLowerCase().includes(query);
+      const tagsMatch = recipe.tags?.some((tag) =>
+        tag.toLowerCase().includes(query)
+      );
+
+      return titleMatch || descriptionMatch || tagsMatch;
+    });
+
+    return filteredRecipes;
+  },
+});
+
 // Get a specific recipe
 export const getRecipe = query({
   args: {
